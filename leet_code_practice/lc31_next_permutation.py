@@ -35,7 +35,7 @@ def nextPermutation( nums ):
 # Which somehow magically, we don't need to sort the remaining array
 # we only need to reverse it, because we know it is already in lex order
 # if not step #2 would have stopped at an earlier position
-def nextPermutation( nums ):
+def nextPermutation2( nums ):
     # 1.
     if len(nums) <= 1:
         return
@@ -64,6 +64,32 @@ def nextPermutation( nums ):
 
     return
 
-numbers = [2,3,1,3,3]
-nextPermutation(numbers)
+def nextPermutation3( nums ):
+    if len(nums) <= 1:
+        return
+    l = len(nums)
+    i = l - 2
+    while i >= 0 and nums[i] >= nums[i+1]:
+        i -= 1
+
+    if i >= 0:
+        b = j = i + 1
+        while j < l:
+            if nums[i] < nums[j] and nums[j] <= nums[b]:
+                b = j
+            j += 1
+        nums[i], nums[b] = nums[b], nums[i]
+    i += 1
+
+    k = 0
+    while 2 * k < l - i:
+        nums[i + k], nums[l - 1 - k] = nums[l - 1 - k], nums[i + k]
+        k += 1
+
+    return
+
+
+
+numbers = [1, 2, 3]
+nextPermutation3(numbers)
 print(numbers)
