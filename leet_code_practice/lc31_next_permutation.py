@@ -73,14 +73,12 @@ def nextPermutation3( nums ):
         i -= 1
 
     if i >= 0:
-        b = j = i + 1
-        while j < l:
-            if nums[i] < nums[j] and nums[j] <= nums[b]:
-                b = j
+        j = i + 1
+        while j < l and nums[i] < nums[j]:
             j += 1
-        nums[i], nums[b] = nums[b], nums[i]
+        nums[i], nums[j - 1] = nums[j - 1], nums[i]
     i += 1
-
+    
     k = 0
     while 2 * k < l - i:
         nums[i + k], nums[l - 1 - k] = nums[l - 1 - k], nums[i + k]
@@ -90,6 +88,6 @@ def nextPermutation3( nums ):
 
 
 
-numbers = [1, 2, 3]
+numbers = [2, 3, 1]
 nextPermutation3(numbers)
 print(numbers)
