@@ -1,4 +1,4 @@
-def longestValidParentheses(s: str):
+def longestValidParentheses(s):
     open_stack = []
     completed = []
 
@@ -6,7 +6,7 @@ def longestValidParentheses(s: str):
         if char == '(':
             open_stack.append('(')
             completed.append(-1)
-        elif char == ')':
+        else:
             if open_stack:
                 open_stack.pop()
                 for i in range(len(completed)-1, -1, -1 ):
@@ -27,3 +27,31 @@ def longestValidParentheses(s: str):
 
     return result_max
 
+# Added visualization to Erik's solution
+def longestValidParenthesesErik(s):
+    longest = 0
+    unmatched_parentheses = 0
+    first_occurrence = {0: -1}
+    carat_zero = 30
+    for i in range(len(s)):
+        if s[i] == "(":
+            unmatched_parentheses += 1
+            if unmatched_parentheses not in first_occurrence:
+                first_occurrence[unmatched_parentheses] = i
+            print(f'"(" i: {i} unmatched: {unmatched_parentheses} occur: {first_occurrence}')
+            carat_str = ''.join(' '*(carat_zero + 7*unmatched_parentheses)) + '^'
+            print(carat_str)
+        else:
+            first_occurrence.pop(unmatched_parentheses)
+            unmatched_parentheses -= 1
+            if unmatched_parentheses not in first_occurrence:
+                first_occurrence[unmatched_parentheses] = i
+                carat_zero += 7
+            else:
+                longest = max(longest, i - first_occurrence[unmatched_parentheses])
+            print(f'")" i: {i} unmatched: {unmatched_parentheses} occur: {first_occurrence}')
+            carat_str = ''.join(' '*(carat_zero + 7*unmatched_parentheses)) + '^'
+            print(carat_str)
+    return longest
+
+print(longestValidParenthesesErik('())(()'))
