@@ -1,3 +1,4 @@
+from math import comb
 # the best solution for this problem computationally uses probability to calculate
 # thought it would be fun to devise a recursive solution instead
 # memoization added to decrease time complexity
@@ -49,6 +50,13 @@ class Solution2:
                     right = self.numberOfWays(startPos + 1, endPos, k - 1 )
                 self.memo[memo_tup] = ( left + right ) % (10**9+7)
         return self.memo[memo_tup]
+
+# 1 liner using math.comb
+class Solution3:
+    def numberOfWays(self, startPos, endPos, k):
+        return 0 if (startPos-endPos+k) % 2 or (startPos-endPos+k) < 0 else comb(k, (startPos-endPos+k)//2) % (10**9+7)
+
+
 
 solution2 = Solution2()
 
