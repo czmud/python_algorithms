@@ -22,9 +22,34 @@ class Solution:
                     left = self.numberOfWays(startPos - 1, endPos, k - 1 )
                 if startPos < endPos or dof > 0:
                     right = self.numberOfWays(startPos + 1, endPos, k - 1 )
-                self.memo[memo_str] = left + right
-        return self.memo[memo_str] % (10**9+7)
+                self.memo[memo_str] = ( left + right ) % (10**9+7)
+        return self.memo[memo_str]
 
-solution1 = Solution()
+# copy of same solution, this time testing tuples as memo key instead of strings
+class Solution2:
+    def __init__(self):
+        self.memo = {}
+    def numberOfWays(self, startPos, endPos, k):
+        
+        delta = abs(endPos - startPos)
+        dof = k - delta
+        if delta > k or ( endPos + startPos + k ) % 2 == 1:
+            return 0
+        
+        memo_tup = (k, startPos)
+        if memo_tup not in self.memo:
+            if dof == 0:
+                self.memo[memo_tup] = 1
+            else:
+                left = 0
+                right = 0
+                if startPos > endPos or dof > 0:
+                    left = self.numberOfWays(startPos - 1, endPos, k - 1 )
+                if startPos < endPos or dof > 0:
+                    right = self.numberOfWays(startPos + 1, endPos, k - 1 )
+                self.memo[memo_tup] = ( left + right ) % (10**9+7)
+        return self.memo[memo_tup]
 
-print(solution1.numberOfWays(0, 3, 53))
+solution2 = Solution2()
+
+print(solution2.numberOfWays(0, 3, 53))
