@@ -99,8 +99,86 @@ def countComponents2(n, edges):
     count += n - len(nordic)
     return count
 
+# uses call stack to loop through reachable nodes
+def countComponentsErik(n, edges):
+    # create an adjacency list
+    adjacency = {i: [] for i in range(n)}
+    for edge in edges:
+        adjacency[edge[0]].append(edge[1])
+        adjacency[edge[1]].append(edge[0])
+    
+    components = 0
+    visited = [False for i in range(n)]
+    for i in range(n):
+        # if node i has not been visited, count as new component
+        if not visited[i]:
+            components += 1
+            # mark all nodes that can be reached from node i as visited 
+            reachable = [i]
+            print(reachable)
+            while reachable:
+                print(reachable)
+                nextNode = reachable.pop()
+                if not visited[nextNode]:
+                    visited[nextNode] = True
+                    reachable += adjacency[nextNode]
+
+    return components
+
+def countComponentsUnionFind(n, edges):
+    # Union solution starts with list of nodes (max number of possible components)
+    # Every edge decreases the number of components by 1 (assuming it is not creating circular connection)
+    # If no edges exist then we have n components as our answer
+    components = [i for i in range(n)]
+
+    # helper function 
+    # this solution also uses a marking system to determine if node has been visited yet or not?
+    def find(x):
+        # if component is still equal to itself, then it has not been visited yet
+        if components[x] != x:
+            # recursively call until we discover unvisited node
+            # and set this value - it is the parent
+            components[x] = find(components[x])
+        return components[x]
+    
+    # helper function
+    # takes argument x, y (deconstructed edge) and checks if they are part of the same union
+    def union(x, y):
+        fx, fy = find(x), find(y)
+        if fx != fy:
+            # if not already joined, "join" them by overwriting value of fx to value fy
+            # at the end when we loop back through find(x) all positions that have been "joined"
+            # will point back to the same "parent" value, thus we know they are connected
+            components[fx] = fy
+
+    for edge in edges:
+        union(edge[0], edge[1])
+    # also could be written
+    # for x, y in edges:
+    #   union(x, y)
+
+    # at this point printing components might appear as if there was a mistake in the union
+    print(components)
+    hashmap = {find(i) for i in range(n)}
+    # but when the find operation is performed, we see that it still works because all of the values
+    # are pointing back to and now replaced by the correct parent
+    print(components)
+    # checkout the generate hashmap, which we can now return the length of for our answer
+    print(hashmap)
+    return len(hashmap)
+    #
+    # ALTERNATE RETURNS I CAME ACCROSS
+    #
+    # This is the other part that took me a while to think about
+    # loop through find function and convert to hashmap
+    # repeat values will get overwritten, so calculating the length gives us the number of unique components
+    return len({find(i) for i in range(n)})
+    # also similar operation mapping over find function -> set
+    return len(set(map(find, range(n))))
 
 
 
-print(countComponents2(5, [[0,1],[1,2],[2,3],[3,4]]))
+
+
+print(countComponentsUnionFind(7, [[0,1],[1,2],[2,3],[3,4]]))
 
