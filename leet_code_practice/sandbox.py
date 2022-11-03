@@ -45,6 +45,15 @@ object1 = exampleObject()
 # id function used for viewing unique IDs for python class objects
 print(id(object1))
 
+print(object1.__dict__)
+print(vars(object1))
+print(object1.__module__)
+print(object1.__doc__)
+print(object1.__class__)
+print(object1.__weakref__)
+print(object1.__str__)
+print(object1.__hash__)
+
 
 # thinking about lambdas
 def myfunc(n):
@@ -53,3 +62,9 @@ def myfunc(n):
 mydoubler = myfunc(2)
 
 print(mydoubler(11))
+
+matrix = [ [0] * (3) for _ in range(6)]
+# matrix = [[0] * 3] * 6
+print(matrix)
+matrix[0][1] = 1
+print(matrix)
