@@ -68,3 +68,24 @@ matrix = [ [0] * (3) for _ in range(6)]
 print(matrix)
 matrix[0][1] = 1
 print(matrix)
+
+
+# from sortedcontainers import SortedList
+
+
+# bitwise operators
+
+# AND
+8 & 9 # equals 8
+
+# OR
+8 | 9 # equals 9
+
+# NOT
+~8 # inverts all the bits
+print(bin(8))
+print(bin(~8))
+
+# XOR
+# bit by bit XOR comparison
+8^9 # equals 1
