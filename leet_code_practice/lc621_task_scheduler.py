@@ -43,3 +43,37 @@ class Solution:
 
         return task_count
 
+    def leastInterval2(self, tasks, n):
+        if n == 0:
+            return len(tasks)
+
+        task_freq = {}
+        for task in tasks:
+            if task not in task_freq:
+                task_freq[task] = 1
+            else:
+                task_freq[task] += 1
+
+        freq_heap = []
+        for freq in task_freq.values():
+            heapq.heappush(freq_heap, -freq)
+
+        wait_heap = []
+        task_count = 0
+        while freq_heap or wait_heap:
+            task_count += 1
+
+            while wait_heap and wait_heap[0][0] + n < task_count:
+                move = heapq.heappop(wait_heap)
+                heapq.heappush(freq_heap, move[1])
+
+            if not freq_heap:
+                continue
+            
+            next_task = heapq.heappop(freq_heap)
+            
+            if next_task < -1:
+                heapq.heappush(wait_heap, (task_count, next_task + 1 ))
+
+        return task_count
+
