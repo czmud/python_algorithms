@@ -12,18 +12,16 @@ class Solution:
         }
     # Let's use DP to brute force the solution just for fun
     def maxProfit(self, prices):
-        if len(prices) in self.memo:
-            return self.memo[len(prices)]
+        if len(prices) not in self.memo:
+            buy = prices[0]
+            max_added = 0
+            for i in range(1, len(prices)):
+                # buy
+                max_added = max(max_added, prices[i] - buy + self.maxProfit(prices[i+1:]))
+                # don't buy
+                max_added = max(max_added, self.maxProfit(prices[i:]))
+            self.memo[len(prices)] = max_added
         
-        buy = prices[0]
-        max_added = 0
-        for i in range(1, len(prices)):
-            # buy
-            max_added = max(max_added, prices[i] - buy + self.maxProfit(prices[i+1:]))
-            # don't buy
-            max_added = max(max_added, self.maxProfit(prices[i:]))
-
-        self.memo[len(prices)] = max_added
         return self.memo[len(prices)]
 
 
