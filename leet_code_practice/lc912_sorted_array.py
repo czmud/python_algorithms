@@ -44,6 +44,80 @@ class Solution:
             num = num ^ -9223372036854775808
             print(f'{num} {bin(num)}')
             print('-----')
+        return
+
+
+
+    def sortArrayErik(self, nums):
+        for i in range(16):
+            nums = self.CountingSort(nums, i)
+
+        j = 0
+        while j < len(nums) and nums[j] >= 0: 
+            j += 1
+
+        return nums[j:] + nums[:j]
+
+    # stable sort of nums with sort key = bit 2^m
+    def CountingSort(self, nums, m):
+        length = len(nums)
+        count = [0, 0]
+        # output = [None] * length
+
+        bitmap = 1 << m
+        for i in range(length):
+            b = 1 if nums[i] & bitmap else 0
+            count[b] += 1
+
+        count[1] = count[0] + count[1]
+        mid_point = count[0]
+
+        next_num = nums[-1]
+        while count[0] > 0 or count[1] > mid_point:
+            b = 1 if next_num & bitmap else 0
+            match b:
+                case 0:
+                    count[b] -= 1
+                    temp = nums[count[b]]
+                    nums[count[b]] = next_num
+                    next_num = temp
+                case 1:
+                    count[b] -= 1
+                    nums[count[b]] = next_num
+                    next_num = nums[count[b] - 1]
+
+        return nums
+
+    def sortArrayErik2(self, nums):
+        for i in range(16):
+            nums = self.CountingSortErik2(nums, i)
+
+        j = 0
+        while j < len(nums) and nums[j] >= 0: 
+            j += 1
+
+        return nums[j:] + nums[:j]
+
+    # stable sort of nums with sort key = bit 2^m
+    def CountingSortErik2(self, nums, m):
+        length = len(nums)
+        count = [0, 0]
+        output = [None] * length
+
+        bitmap = 1 << m
+        for i in range(length):
+            j = 1 if nums[i] & bitmap else 0
+            count[j] = count[j] + 1
+
+        count[1] = count[0] + count[1]
+
+        for i in range(length - 1, -1, -1):
+            j = 1 if nums[i] & bitmap else 0
+            count[j] = count[j] - 1
+            output[count[j]] = nums[i]
+
+        return output
+
 
 nums1 = [-4, -3, -2, -1, 0, 1, 2, 3, 4,]
 
@@ -51,4 +125,3 @@ solution = Solution()
 
 print(bin(-9223372036854775808))
 solution.sortArray2(nums1)
-
