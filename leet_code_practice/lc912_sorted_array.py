@@ -1,3 +1,4 @@
+import random
 class Solution:
     # LSD
     def sortArray(self, nums):
@@ -117,6 +118,70 @@ class Solution:
             output[count[j]] = nums[i]
 
         return output
+
+    def sortArrayQuick(self, nums):
+        l = len(nums)
+
+        match l:
+            case 0:
+                return []
+            case 1:
+                return nums
+            case 2:
+                return [min(nums), max(nums)]
+            case _:
+                if min(nums) == max(nums):
+                    return nums
+        
+        pivot = random.choice(nums)
+
+        left_nums = []
+        right_nums = []
+        for num in nums:
+            if num < pivot:
+                left_nums.append(num)
+            else:
+                right_nums.append(num)
+
+        return self.sortArray(left_nums) + self.sortArray(right_nums)
+    
+    def sortArrayQuickInPlace(self, nums):
+        right = len(nums)
+
+        self.QuickSortInPlace(nums, 0, right )
+
+        return nums
+
+    def QuickSortInPlace(self, nums, left, right):
+        length = right - left
+
+        match length:
+            case 0:
+                return
+            case 1:
+                return
+            case 2:
+                if nums[left] > nums[right-1]:
+                    nums[left], nums[right-1] = nums[right-1], nums[left]
+                return
+            case _:
+                if min(nums[left:right]) == max(nums[left:right]):
+                    return
+        
+        pivot = random.choice(nums[left:right])
+
+        p = 0
+        for i in range(left, right):
+            if nums[i] < pivot and i != p:
+                nums[i], nums[p] = nums[p], nums[i]
+                p += 1
+        
+        self.QuickSortInPlace(nums, left, p)
+        self.QuickSortInPlace(nums, p, right)
+
+
+
+
 
 
 nums1 = [-4, -3, -2, -1, 0, 1, 2, 3, 4,]
