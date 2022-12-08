@@ -164,22 +164,37 @@ class Solution:
                 if nums[left] > nums[right-1]:
                     nums[left], nums[right-1] = nums[right-1], nums[left]
                 return
-            case _:
-                if min(nums[left:right]) == max(nums[left:right]):
-                    return
-        
+
         pivot = random.choice(nums[left:right])
 
-        p = 0
-        for i in range(left, right):
-            if nums[i] < pivot and i != p:
-                nums[i], nums[p] = nums[p], nums[i]
+        p = left
+        i = left
+        j = right - 1
+        while i <= j:
+            # if larger than pivot: move to far right side of current array slice. p doesn't change.
+            if nums[i] > pivot:
+                nums[i], nums[j] = nums[j], nums[i]
+                j -= 1
+                continue
+            # if less than pivot: move to pivot placeholder (p). increment p.
+            elif nums[i] < pivot:
+                if i != p:
+                    nums[i], nums[p] = nums[p], nums[i]
                 p += 1
-        
+            # if equal to pivot: move nothing. p doesn't change.
+            i += 1
+
+        # if 5 was chosen as the pivot for the following array:
+        # [ 2, 7, 5, 5, 9, 5, 1 ]
+        #
+        # then after the end of while loop, we will have a partitioned array in the form of:
+        #         p     j  i
+        # [ 2, 1, 5, 5, 5, 9, 7 ]
+        # so we can recursively partition (left:p) and (j+1:right) 
+        # to effectively exclue whatever our pivot value had been
+
         self.QuickSortInPlace(nums, left, p)
-        self.QuickSortInPlace(nums, p, right)
-
-
+        self.QuickSortInPlace(nums, j+1, right)
 
 
 
