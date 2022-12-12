@@ -14,7 +14,6 @@ import copy
 # The owner who smokes BlueMaster drinks beer
 # The German smokes Princes
 # The Norwegian lives next to the blue house
-# -----
 # The man who smokes Blends has a neighbor who drinks water
 
 options = {
